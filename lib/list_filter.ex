@@ -1,18 +1,21 @@
 defmodule ListFilter do
-  @moduledoc """
-  Documentation for `ListFilter`.
-  """
+  require Integer
 
-  @doc """
-  Hello world.
+  def call(list) do
+    list
+    |> convert_to_integer
+    |> Enum.filter(fn x -> Integer.is_odd(x) end)
+    |> Enum.count()
+  end
 
-  ## Examples
-
-      iex> ListFilter.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defp convert_to_integer(strings) do
+    Enum.flat_map(strings, fn string ->
+      case Integer.parse(string) do
+        # transform to integer
+        {int, _rest} -> [int]
+        # skip the value
+        :error -> []
+      end
+    end)
   end
 end
